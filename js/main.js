@@ -40,6 +40,7 @@ var effectLevelButton = effectLevel.querySelector('.effect-level__pin');
 var currentEffect;
 
 var hashtagInput = uploadFileForm.querySelector('.text__hashtags');
+var commentTextArea = uploadFileForm.querySelector('.text__description');
 
 var commentExamples = [
   'Всё отлично!',
@@ -137,23 +138,20 @@ var renderPhoto = function () {
   pictureBlock.appendChild(fragment);
 };
 
-var onEscCloseForm = function (evt) {
-  if (evt.keyCode === ESC_KEYCODE) {
-    uploadFileForm.classList.add('hidden');
-  }
-  uploadFile.value = '';
-  document.removeEventListener('keydown', onEscCloseForm);
-};
-
-var openEditForm = function () {
-  uploadFileForm.classList.remove('hidden');
-  document.addEventListener('keydown', onEscCloseForm);
-};
-
 var closeEditForm = function () {
   uploadFileForm.classList.add('hidden');
   document.removeEventListener('keydown', onEscCloseForm);
   uploadFile.value = '';
+};
+
+var onEscCloseForm = function (evt) {
+  if (evt.keyCode === ESC_KEYCODE) {
+    closeEditForm();
+  }
+
+var openEditForm = function () {
+  uploadFileForm.classList.remove('hidden');
+  document.addEventListener('keydown', onEscCloseForm);
 };
 
 var setImageScale = function (positiveFlag) {
@@ -297,6 +295,14 @@ hashtagInput.addEventListener('focus', function () {
 });
 
 hashtagInput.addEventListener('blur', function () {
+  document.addEventListener('keydown', onEscCloseForm);
+});
+
+commentTextArea.addEventListener('focus', function () {
+  document.removeEventListener('keydown', onEscCloseForm);
+});
+
+commentTextArea.addEventListener('blur', function () {
   document.addEventListener('keydown', onEscCloseForm);
 });
 
