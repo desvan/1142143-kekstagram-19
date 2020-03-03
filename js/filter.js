@@ -10,24 +10,31 @@
   var MIN_BRIGHTNESS_VALUE = 1;
 
   /* Инициализация блока предпросмотра изображения */
-  var imagePreview = window.form.uploadFileForm.querySelector('.img-upload__preview img');
+  var imagePreview = window.form.uploadFileForm
+    .querySelector('.img-upload__preview img');
 
   /* Инициализация элементов масштабирования изображения */
-  var smallerScaleButton = window.form.uploadFileForm.querySelector('.scale__control--smaller');
-  var biggerScaleButton = window.form.uploadFileForm.querySelector('.scale__control--bigger');
-  var scaleField = window.form.uploadFileForm.querySelector('.scale__control--value');
+  var smallerScaleButton = window.form.uploadFileForm
+    .querySelector('.scale__control--smaller');
+  var biggerScaleButton = window.form.uploadFileForm
+    .querySelector('.scale__control--bigger');
+  var scaleField = window.form.uploadFileForm
+    .querySelector('.scale__control--value');
 
   /* Инициализация элементов работы с фильтрами */
-  var effectButtons = window.form.uploadFileForm.querySelectorAll('.effects__radio');
-  var effectLevel = window.form.uploadFileForm.querySelector('.effect-level');
-  var effectInput = effectLevel.querySelector('.effect-level__value');
-  var effectlevelBar = effectLevel.querySelector('.effect-level__line');
-  var effectLevelButton = effectLevel.querySelector('.effect-level__pin');
-  var effectlevelFillBar = window.form.effectLevel.querySelector('.effect-level__depth');
+  var effectButtons = window.form.uploadFileForm
+    .querySelectorAll('.effects__radio');
+  var effectInput = window.form.effectLevel
+    .querySelector('.effect-level__value');
+  var effectlevelBar = window.form.effectLevel
+    .querySelector('.effect-level__line');
+  var effectLevelButton = window.form.effectLevel
+    .querySelector('.effect-level__pin');
+  var effectlevelFillBar = window.form.effectLevel
+    .querySelector('.effect-level__depth');
   var currentEffect;
   var bar;
   var barLength;
-
   /**
    * Функция масштабирования изображения
    * @param {boolean} positiveFlag - флаг нажатия кнопок уменьшения/увеличения
