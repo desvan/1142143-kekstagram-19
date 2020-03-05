@@ -16,7 +16,7 @@
    * Функция отрисовки фотографий на странице
    * @param {Object[]} photos - массив объектов с параметрами фотографий
    */
-  var initPhoto = function (photos) {
+  var renderPhoto = function (photos) {
     if (!window.render.defaultPhotos) {
       window.render.defaultPhotos = photos;
     }
@@ -37,56 +37,43 @@
 
     /* Клонируем содержимое шаблона, добавляем данные из массива
       объектов и записываем получившийся блок во фрагмент */
-    photos.forEach(function (item) {
+    for (var i = 0; i < photos.length; i++) {
       var picture = pictureTemplate.cloneNode(true);
 
-      picture.querySelector('.picture__img').src = item.url;
-      picture.querySelector('.picture__likes').textContent = item.likes;
-      picture.querySelector('.picture__comments').textContent = item.comments.length;
+      picture.querySelector('.picture__img').src = photos[i].url;
+      picture.querySelector('.picture__likes').textContent = photos[i].likes;
+      picture.querySelector('.picture__comments').textContent = photos[i].comments.length;
 
       fragment.appendChild(picture);
-
-      picture.addEventListener('click', function () {
-        window.preview.showBigPicture(item);
-      });
-    });
+    }
 
     /* Присоединяем готовый фрагмент к блоку picture */
     pictureBlock.appendChild(fragment);
-
     pictureFilter.classList.remove('img-filters--inactive');
   };
 
   /**
-   * Функция закрытия блока с ошибкой
+   * Функция обработчика закрытия блока с ошибкой
    */
-  var сloseErrorBlock = function () {
+  var closeErrorBlock = function () {
     var errorBlock = mainBlock.querySelector('.error');
     var errorButtons = errorBlock.querySelectorAll('.error__button');
     mainBlock.removeChild(errorBlock);
 
-    errorButtons.forEach(function (item) {
-      item.removeEventListener('click', onErrorButtonClick);
-    });
-
-    document.removeEventListener('keydown', onErrorBlockKeydown, true);
-    document.removeEventListener('click', onErrorBlockClick);
-  };
-
-  /**
-   * Функция обработчика нажатия на кнопки в блоке ошибок
-   */
-  var onErrorButtonClick = function () {
-    сloseErrorBlock();
+    for (var i = 0; i < errorButtons.length; i++) {
+      errorButtons[i].removeEventListener('click', closeErrorBlock);
+    }
+    document.removeEventListener('keydown', onEscCloseErrorBlock, true);
+    document.removeEventListener('click', onClickCloseErrorBlock);
   };
 
   /**
    * Функция закрытия блока с ошибкой по нажатию клавиши Esc
    * @param {Object} evt - объект Event
    */
-  var onErrorBlockKeydown = function (evt) {
-    if (window.util.isEscPressed(evt)) {
-      сloseErrorBlock();
+  var onEscCloseErrorBlock = function (evt) {
+    if (evt.keyCode === window.util.ESC_KEYCODE) {
+      closeErrorBlock();
       evt.stopPropagation();
     }
   };
@@ -96,10 +83,10 @@
    * области вне окна
    * @param {Object} evt - объект Event
    */
-  var onErrorBlockClick = function (evt) {
+  var onClickCloseErrorBlock = function (evt) {
     var innerErrorBlock = mainBlock.querySelector('.error__inner');
     if (evt.target !== innerErrorBlock && !(innerErrorBlock.contains(evt.target))) {
-      сloseErrorBlock();
+      closeErrorBlock();
     }
   };
 
@@ -116,22 +103,22 @@
 
     mainBlock.appendChild(errorBlock);
 
-    errorButtons.forEach(function (item) {
-      item.addEventListener('click', onErrorButtonClick);
-    });
+    for (var i = 0; i < errorButtons.length; i++) {
+      errorButtons[i].addEventListener('click', closeErrorBlock);
+    }
 
-    document.addEventListener('keydown', onErrorBlockKeydown, true);
-    document.addEventListener('click', onErrorBlockClick);
+    document.addEventListener('keydown', onEscCloseErrorBlock, true);
+    document.addEventListener('click', onClickCloseErrorBlock);
   };
 
 
-  window.network.loadData(initPhoto, onError);
+  window.network.loadData(renderPhoto, onError);
 
   window.render = {
     pictureBlock: pictureBlock,
     onError: onError,
     mainBlock: mainBlock,
     pictureFilter: pictureFilter,
-    initPhoto: initPhoto
+    renderPhoto: renderPhoto
   };
 })();
