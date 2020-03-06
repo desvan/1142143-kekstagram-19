@@ -1,3 +1,4 @@
+
 'use strict';
 
 (function () {
@@ -14,40 +15,25 @@
     return Math.floor(Math.random() * (max - min)) + min;
   };
 
-
-  var shuffleArray = function (arr) {
-    for (var i = arr.length - 1; i > 0; i--) {
-      var j = Math.floor(Math.random() * (i + 1));
-      var tmp = arr[i];
-      arr[i] = arr[j];
-      arr[j] = tmp;
-    }
-
-    return arr;
-  };
-
-
   /**
-   * Функция генерации массива неповторяющихся целых чисел в заданном диапазоне
-   * @param {Number} min - нижняя граница диапазона
-   * @param {Number} max - верхняя граница диапазона
-   * @return {Number[]} - массив с целыми числами
+   * Функция перемешивания элементов массива в случайном порядке
+   * @param {Array} array - массив, который необходимо перемешать
+   * @return {Array} возвращает массив с перемешанными элементами
    */
-  var getRandomUniqueArray = function (min, max) {
-    var arr = [];
+  var shuffleArray = function (array) {
+    array.forEach(function (item, index, newArray) {
+      var randomIndex = getRandomElement(index, newArray.length);
+      var temp = item;
+      newArray[index] = newArray[randomIndex];
+      newArray[randomIndex] = temp;
+    });
 
-    /* Заполняем массив числами из заданного диапазона */
-    for (var i = 0; i < (max - min); i++) {
-      arr.push(min + i);
-    }
-
-    /* Меняем элементы местами */
-    return shuffleArray(arr);
+    return array;
   };
 
   /**
    * Функция, выполняющая задержку функции, передаваемой в параметре,
-   * для устранение "дрезбезга" при отрисовке страницы
+   * при отрисовке страницы
    * @param {function} callback - функция
    * @return {function}
    */
@@ -66,10 +52,11 @@
   };
 
   window.util = {
-    ESC_KEYCODE: ESC_KEYCODE,
+    isEscPressed: function (evt) {
+      return evt.keyCode === ESC_KEYCODE;
+    },
     getRandomElement: getRandomElement,
     shuffleArray: shuffleArray,
-    getRandomUniqueArray: getRandomUniqueArray,
     debounce: debounce
   };
 })();
