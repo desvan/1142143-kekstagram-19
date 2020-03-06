@@ -10,13 +10,13 @@
    * @param {string} pressedButtonId - id нажатой кнопки
    */
   var setFilterButtonPressed = function (pressedButtonId) {
-    for (var i = 0; i < filterButtons.length; i++) {
-      if (filterButtons[i].id === pressedButtonId) {
-        filterButtons[i].classList.add('img-filters__button--active');
+    filterButtons.forEach(function (item) {
+      if (item.id === pressedButtonId) {
+        item.classList.add('img-filters__button--active');
       } else {
-        filterButtons[i].classList.remove('img-filters__button--active');
+        item.classList.remove('img-filters__button--active');
       }
-    }
+    });
   };
 
   /**
@@ -24,13 +24,13 @@
    */
   var renderRandomPhotos = function () {
     var randomPhotos = [];
-    var arr = window.util.shuffleArray(window.render.defaultPhotos.slice());
+    var mixedPhotos = window.util.shuffleArray(window.render.defaultPhotos.slice());
 
-    for (var i = 0; i < RANDOM_PHOTO_NUMBER; i++) {
-      randomPhotos.push(arr[i]);
-    }
+    mixedPhotos.slice(0, RANDOM_PHOTO_NUMBER).forEach(function (item) {
+      randomPhotos.push(item);
+    });
 
-    window.render.renderPhoto(randomPhotos);
+    window.render.initPhoto(randomPhotos);
   };
 
   /**
@@ -40,43 +40,40 @@
    * @return {Number} - число, разность между количеством соседних комментариев
    */
   var compareComments = function (left, right) {
-    var diff = right.comments.length - left.comments.length;
-    return diff;
+    var difference = right.comments.length - left.comments.length;
+    return difference;
   };
 
   /**
    * Функция отрисовки фото по количеству комментариев
    */
-  var renderPhotosByComments = function () {
-    var arr = window.render.defaultPhotos.slice().sort(compareComments);
-    window.render.renderPhoto(arr);
+  var initPhotosByComments = function () {
+    var array = window.render.defaultPhotos.slice().sort(compareComments);
+    window.render.initPhoto(array);
   };
 
   /**
    * Функция обработчика нажатия на кнопки фильтра изображений
    * @param {Object} evt - объект Event
    */
-  var onFilterButtonClick = window.util.debounce(function (evt) {
+  var filterPhotos = window.util.debounce(function (evt) {
     switch (evt.target.id) {
       case 'filter-popular':
-        window.render.renderPhoto(window.render.defaultPhotos);
-        window.preview.initPreview();
+        window.render.initPhoto(window.render.defaultPhotos);
         break;
       case 'filter-random':
         renderRandomPhotos();
-        window.preview.initPreview();
         break;
       case 'filter-discussed':
-        renderPhotosByComments();
-        window.preview.initPreview();
+        initPhotosByComments();
         break;
     }
   });
 
-  for (var i = 0; i < filterButtons.length; i++) {
-    filterButtons[i].addEventListener('click', function (evt) {
+  filterButtons.forEach(function (item) {
+    item.addEventListener('click', function (evt) {
       setFilterButtonPressed(evt.target.id);
-      onFilterButtonClick(evt);
+      filterPhotos(evt);
     });
-  }
+  });
 })();
