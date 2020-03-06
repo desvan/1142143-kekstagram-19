@@ -90,6 +90,9 @@
       if (item[0] !== '#') {
         hashtagInput.setCustomValidity('Хэш-тег должен начинатсья с символа #');
         hashtagInput.style.borderColor = 'red';
+      } else if (!item.match(/^[#]+[0-9a-zA-ZА-Яа-яЁё\s]+$/)) {
+        hashtagInput.setCustomValidity('Хэш-тег после # может состоять из букв и чисел и не может содержать пробелы, спецсимволы, символы пунктуации, эмодзи и т.д.');
+        hashtagInput.style.borderColor = 'red';
       } else if (item.length === 1) {
         hashtagInput.setCustomValidity('Хэш-тег не может состоять из одного символа #');
         hashtagInput.style.borderColor = 'red';
@@ -100,7 +103,7 @@
         hashtagInput.setCustomValidity('Один и тот же хэш-тег не может быть использован дважды');
         hashtagInput.style.borderColor = 'red';
       } else if (innerArray.length > MAX_HASHTAGS) {
-        hashtagInput.setCustomValidity('Максимальное число тегов: ' + MAX_HASHTAGS);
+        hashtagInput.setCustomValidity('Максимальное число хэш-тегов: ' + MAX_HASHTAGS);
         hashtagInput.style.borderColor = 'red';
       } else if (item.length > MAX_HASHTAG_LENGTH) {
         hashtagInput.setCustomValidity('Максимальная длина хэш-тэга: ' + MAX_HASHTAG_LENGTH + ' символов');
