@@ -87,10 +87,10 @@
     var hashtags = hashtagInput.value.toLowerCase().split(' ');
 
     hashtags.forEach(function (item, index, innerArray) {
-      if (item[0] !== '#') {
+      if (item[0] !== '#' && item.length !== 0) {
         hashtagInput.setCustomValidity('Хэш-тег должен начинатсья с символа #');
         hashtagInput.style.borderColor = 'red';
-      } else if (!item.match(/^[#]+[0-9a-zA-ZА-Яа-яЁё\s]+$/)) {
+      } else if (!item.match(/^[#]+[0-9a-zA-ZА-Яа-яЁё\s]+$/) && item.length !== 0) {
         hashtagInput.setCustomValidity('Хэш-тег после # может состоять из букв и чисел и не может содержать пробелы, спецсимволы, символы пунктуации, эмодзи и т.д.');
         hashtagInput.style.borderColor = 'red';
       } else if (item.length === 1) {
